@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="stone (1).png">
+    <title>OnyX SS | Best Serverside on market</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0f0f;
+            --panel-bg: #161616;
+            --accent: #ffffff;
+            --border: #252525;
+            --text-dim: #a0a0a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--accent);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 10%;
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .nav-logo img {
+            width: 35px;
+            height: 35px;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        main {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .page-content {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .hero-mini {
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: #1a1a1a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 25px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            padding: 35px;
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card:hover {
+            border-color: #444;
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 2rem;
+            margin: 15px 0;
+            color: #fff;
+        }
+
+        .price span {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover { opacity: 0.9; }
+
+        .terminal {
+            background: #000;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 60px;
+            border: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            margin-top: 120px;
+            padding: 50px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: #333;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo" onclick="showPage('home')">
+            <img src="stone (1).png" alt="OnyX Logo">
+            OnyX SS
+        </div>
+        <div class="nav-links">
+            <a onclick="showPage('home')">Home</a>
+            <a onclick="showPage('plans')">Plans</a>
+            <a href="https://discord.gg/At5AVCensE" target="_blank">Discord</a>
+        </div>
+    </nav>
+
+    <main>
+        <div id="home" class="page-content active">
+            <div class="hero-mini">
+                <h1>Почему именно OnyX?</h1>
+                <p style="color: var(--text-dim); max-width: 750px;">OnyX SS — это не просто Serverside, это полный контроль над игровым пространством.</p>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <h3>01. Фиксы</h3>
+                    <p>Быстрейшие фиксы при нахождении ошибок в нашем Serverside.</p>
+                </div>
+                <div class="card">
+                    <h3>02. Использование</h3>
+                    <p>Простота использования на любом девайсе как на Android так и на PC.</p>
+                </div>
+                <div class="card">
+                    <h3>03. Игры</h3>
+                    <p>Игры с активным онлайном которые каждый день попалняются.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="plans" class="page-content">
+            <div class="hero-mini">
+                <h1>Выберите свой план</h1>
+                <p style="color: var(--text-dim);">Получите доступ к лучшему Serverside прям сейчас.</p>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <h3>Basic</h3>
+                    <div class="price">100 <span>R$</span></div>
+                    <p>Базовый доступ который вас проведет в мир Severside и с помощью которого вы сможете понять что это.</p>
+                    <a href="https://t.me/OnyxServerSideBuyBot" target="_blank" class="btn">Купить</a>
+                </div>
+                
+                <div class="card" style="border-color: #555;">
+                    <h3>Premium</h3>
+                    <div class="price">275 <span>R$</span></div>
+                    <p>План который дает одаптацию в мире Serverside но с некоторыми ограничениями.</p>
+                    <a href="https://t.me/OnyxServerSideBuyBot" target="_blank" class="btn">Купить</a>
+                </div>
+                
+                <div class="card">
+                    <h3>Ultimate</h3>
+                    <div class="price">1250 <span>R$</span></div>
+                    <p>Уникальный план который дает превосходную свободу в мире эксплойтинга но с небольшими ограничениями.</p>
+                    <a href="https://t.me/OnyxServerSideBuyBot" target="_blank" class="btn">Купить</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>OnyX Serverside. All rights reserved. &copy; 2026.</footer>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
