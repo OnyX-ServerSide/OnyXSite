@@ -3,266 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="stone (1).png">
-    <title>OnyX SS | Best Serverside on market</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>OnyX Ultimate Cloud</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0f0f0f;
-            --panel-bg: #161616;
-            --accent: #ffffff;
-            --border: #252525;
-            --text-dim: #a0a0a0;
+            --bg-color: #080808;
+            --panel-color: #121212;
+            --card-color: #1a1a1a;
+            --accent-white: #ffffff;
+            --text-gray: #777;
+            --grid-line: rgba(255, 255, 255, 0.025);
+            --border-radius: 24px;
+            --transition-slow: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
-            background-color: var(--bg-dark);
-            color: var(--accent);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.5;
-            overflow-x: hidden;
-        }
-
-        nav {
+            background-color: var(--bg-color);
+            color: white;
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 10%;
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            overflow: hidden;
+            background-image: 
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
-        .nav-logo {
+        .app-container {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .nav-logo img {
-            width: 35px;
-            height: 35px;
-            object-fit: contain;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-            cursor: pointer;
-        }
-
-        .nav-links a:hover { color: var(--accent); }
-
-        main {
-            max-width: 1100px;
-            margin: 60px auto;
-            padding: 0 20px;
-        }
-
-        .page-content {
-            display: none;
-            animation: fadeIn 0.5s ease forwards;
-        }
-
-        .page-content.active {
-            display: block;
-        }
-
-        .hero-mini {
-            margin-bottom: 60px;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            letter-spacing: -2px;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 14px;
-            background: #1a1a1a;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 25px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-        }
-
-        .card {
-            background: var(--panel-bg);
-            border: 1px solid var(--border);
-            padding: 35px;
-            border-radius: 20px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .card:hover {
-            border-color: #444;
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-        }
-
-        .price {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            margin: 15px 0;
-            color: #fff;
-        }
-
-        .price span {
-            font-size: 0.9rem;
-            color: var(--text-dim);
-        }
-
-        .btn {
-            display: block;
             width: 100%;
-            padding: 12px;
-            text-align: center;
-            background: #fff;
-            color: #000;
+            height: 100%;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 240px;
+            background: var(--panel-color);
+            border-radius: var(--border-radius);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo { font-size: 26px; font-weight: 800; margin-bottom: 40px; letter-spacing: -1px; }
+
+        .nav-menu { flex-grow: 1; }
+        .nav-item {
+            display: block;
+            color: var(--text-gray);
             text-decoration: none;
-            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav-item.active, .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+
+        /* --- CONTENT AREA --- */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+        }
+
+        .tab-content {
+            flex-grow: 1;
+            display: none;
+            animation: tabReveal var(--transition-slow);
+        }
+
+        .tab-content.active { display: flex; flex-direction: column; gap: 20px; }
+
+        @keyframes tabReveal {
+            from { opacity: 0; transform: translateY(15px); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        /* --- EXECUTOR & COMMON --- */
+        .editor-window {
+            flex-grow: 1;
+            background: var(--panel-color);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+        #monaco-container { width: 100%; height: 100%; }
+
+        /* --- GAMES & HUB GRID --- */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .game-card {
+            background: var(--card-color);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.03);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+        .game-card:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.1); }
+        
+        .game-img {
+            width: 100%;
+            height: 120px;
+            background: #252525;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .game-info { padding: 15px; }
+        .game-info h3 { font-size: 16px; margin-bottom: 5px; }
+        .game-info p { color: var(--text-gray); font-size: 11px; margin-bottom: 15px; }
+
+        /* --- BOTTOM BAR --- */
+        .bottom-bar {
+            height: 80px;
+            background: var(--panel-color);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .btn-group { display: flex; gap: 10px; }
+        .action-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 12px;
             font-weight: 600;
-            margin-top: 20px;
-            transition: opacity 0.2s;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.3s;
         }
+        .action-btn:hover { background: rgba(255,255,255,0.1); }
+        .btn-execute { background: white; color: black; border: none; }
 
-        .btn:hover { opacity: 0.9; }
+        .status-info { color: var(--text-gray); font-size: 12px; display: flex; gap: 15px; }
+        .status-info span { color: #4CAF50; font-weight: bold; }
 
-        .terminal {
-            background: #000;
-            padding: 25px;
-            border-radius: 15px;
-            margin-top: 60px;
-            border: 1px solid var(--border);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            color: #888;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        footer {
-            margin-top: 120px;
-            padding: 50px;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            color: #333;
-            font-size: 0.8rem;
-        }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="nav-logo" onclick="showPage('home')">
-            <img src="stone (1).png" alt="OnyX Logo">
-            OnyX SS
-        </div>
-        <div class="nav-links">
-            <a onclick="showPage('home')">Home</a>
-            <a onclick="showPage('plans')">Plans</a>
-            <a href="https://discord.gg/At5AVCensE" target="_blank">Discord</a>
-        </div>
-    </nav>
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="logo">OnyX</div>
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="switchTab('executor', this)">Executor</div>
+            <div class="nav-item" onclick="switchTab('hub', this)">Scripts Hub</div>
+            <div class="nav-item" onclick="switchTab('games', this)">Games</div>
+            <div class="nav-item">Settings</div>
+        </nav>
+        <div style="font-size: 12px; color: var(--text-gray);">Server: Connected</div>
+    </aside>
 
-    <main>
-        <div id="home" class="page-content active">
-            <div class="hero-mini">
-                <h1>Почему именно OnyX?</h1>
-                <p style="color: var(--text-dim); max-width: 750px;">OnyX SS — это не просто Serverside, это полный контроль над игровым пространством.</p>
+    <main class="main-content">
+        <div id="executor" class="tab-content active">
+            <div class="editor-window">
+                <div id="monaco-container"></div>
             </div>
-            <div class="grid">
-                <div class="card">
-                    <h3>01. Фиксы</h3>
-                    <p>Быстрейшие фиксы при нахождении ошибок в нашем Serverside.</p>
+            <footer class="bottom-bar">
+                <div class="status-info">
+                    <div>Status: <span>Ready</span></div>
+                    <div>Cloud: <span>Active</span></div>
                 </div>
-                <div class="card">
-                    <h3>02. Использование</h3>
-                    <p>Простота использования на любом девайсе как на Android так и на PC.</p>
+                <div class="btn-group">
+                    <button class="action-btn btn-execute" onclick="sendToRoblox()">Execute</button>
+                    <button class="action-btn" onclick="clearCode()">Clear</button>
+                    <button class="action-btn">R6</button>
+                    <button class="action-btn">Reset</button>
                 </div>
-                <div class="card">
-                    <h3>03. Игры</h3>
-                    <p>Игры с активным онлайном которые каждый день попалняются.</p>
-                </div>
-            </div>
+            </footer>
         </div>
 
-        <div id="plans" class="page-content">
-            <div class="hero-mini">
-                <h1>Выберите свой план</h1>
-                <p style="color: var(--text-dim);">Получите доступ к лучшему Serverside прям сейчас.</p>
+        <div id="hub" class="tab-content">
+            <h2 style="margin-bottom: 20px;">Scripts Hub</h2>
+            <div class="grid-layout">
+                <div class="game-card">
+                    <div class="game-img">📜</div>
+                    <div class="game-info">
+                        <h3>Universal Fly</h3>
+                        <p>Works in 99% of games.</p>
+                        <button class="action-btn btn-execute" style="width: 100%;">Load</button>
+                    </div>
+                </div>
             </div>
-            <div class="grid">
-                <div class="card">
-                    <h3>Basic</h3>
-                    <div class="price">100 <span>R$</span></div>
-                    <p>Базовый доступ который вас проведет в мир Severside и с помощью которого вы сможете понять что это.</p>
-                    <a href="https://t.me/OnyxServerSideBuyBot" target="_blank" class="btn">Купить</a>
+        </div>
+
+        <div id="games" class="tab-content">
+            <h2 style="margin-bottom: 20px;">My Games</h2>
+            <div class="grid-layout">
+                <div class="game-card" onclick="connectGame('Blox Fruits')">
+                    <div class="game-img">⚔️</div>
+                    <div class="game-info">
+                        <h3>Blox Fruits</h3>
+                        <p>Server Status: <span style="color:#4CAF50">Online</span></p>
+                        <button class="action-btn" style="width: 100%;">Connect</button>
+                    </div>
                 </div>
-                
-                <div class="card" style="border-color: #555;">
-                    <h3>Premium</h3>
-                    <div class="price">275 <span>R$</span></div>
-                    <p>План который дает одаптацию в мире Serverside но с некоторыми ограничениями.</p>
-                    <a href="https://t.me/OnyxServerSideBuyBot" target="_blank" class="btn">Купить</a>
-                </div>
-                
-                <div class="card">
-                    <h3>Ultimate</h3>
-                    <div class="price">1250 <span>R$</span></div>
-                    <p>Уникальный план который дает превосходную свободу в мире эксплойтинга но с небольшими ограничениями.</p>
-                    <a href="https://t.me/OnyxServerSideBuyBot" target="_blank" class="btn">Купить</a>
+                <div class="game-card" onclick="connectGame('Pet Simulator 99')">
+                    <div class="game-img">🐶</div>
+                    <div class="game-info">
+                        <h3>Pet Simulator 99</h3>
+                        <p>Server Status: <span style="color:#ff4c4c">Offline</span></p>
+                        <button class="action-btn" style="width: 100%;">Connect</button>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+</div>
 
-    <footer>OnyX Serverside. All rights reserved. &copy; 2026.</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+<script>
+    let editor;
 
-    <script>
-        function showPage(pageId) {
-            document.querySelectorAll('.page-content').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0, 0);
-        }
-    </script>
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+        editor = monaco.editor.create(document.getElementById('monaco-container'), {
+            value: '-- OnyX Cloud Executor\nprint("Hello from Web Interface!")',
+            language: 'lua',
+            theme: 'vs-dark',
+            automaticLayout: true,
+            cursorSmoothCaretAnimation: "on",
+            fontSize: 15,
+            fontFamily: 'JetBrains Mono',
+            minimap: { enabled: false }
+        });
+        monaco.editor.defineTheme('onyx', { base: 'vs-dark', inherit: true, rules: [], colors: { 'editor.background': '#121212' } });
+        monaco.editor.setTheme('onyx');
+    });
+
+    function switchTab(tabId, element) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        element.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        if(tabId === 'executor' && editor) setTimeout(() => editor.layout(), 100);
+    }
+
+    // ЛОГИКА КОННЕКТА (Пример для связи)
+    async function sendToRoblox() {
+        const code = editor.getValue();
+        console.log("Отправка кода на сервер...");
+        
+        // В реальности здесь будет URL твоего прокси-сервера
+        // fetch('https://your-proxy-server.com/exec', { method: 'POST', body: code });
+        alert("Код отправлен в очередь сервера!");
+    }
+
+    function connectGame(name) {
+        alert("Попытка подключения к серверу игры: " + name);
+    }
+
+    function clearCode() { editor.setValue(''); }
+</script>
+
 </body>
-
 </html>
