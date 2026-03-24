@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OnyX ServerSide | Web Based</title>
+    <title>OnyX Ultimate Cloud</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -87,7 +87,7 @@
             to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
-        /* --- EXECUTOR & COMMON --- */
+        /* --- EXECUTOR --- */
         .editor-window {
             flex-grow: 1;
             background: var(--panel-color);
@@ -113,24 +113,11 @@
             transition: 0.3s;
         }
         .card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.1); }
-        .card h3 { margin-bottom: 8px; font-size: 18px; }
-        .card p { color: var(--text-gray); font-size: 12px; margin-bottom: 20px; }
-
-        .game-icon {
-            width: 100%;
-            height: 100px;
-            background: #252525;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-        }
+        .game-icon { height: 100px; background: #222; border-radius: 12px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 32px; }
 
         /* --- BOTTOM BAR --- */
         .bottom-bar {
-            height: 80px;
+            height: 85px;
             background: var(--panel-color);
             border-radius: var(--border-radius);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -145,20 +132,18 @@
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(255,255,255,0.05);
             color: white;
-            padding: 10px 20px;
-            border-radius: 12px;
+            padding: 12px 22px;
+            border-radius: 14px;
             font-weight: 600;
             font-size: 13px;
             cursor: pointer;
             transition: 0.3s;
         }
-        .action-btn:hover { background: rgba(255,255,255,0.08); }
+        .action-btn:hover { background: rgba(255,255,255,0.1); }
         .btn-execute { background: white; color: black; border: none; }
-        .btn-execute:hover { background: #e0e0e0; }
 
         .status-info { color: var(--text-gray); font-size: 12px; display: flex; gap: 15px; }
         .status-info span { color: #4CAF50; font-weight: bold; }
-
     </style>
 </head>
 <body>
@@ -170,9 +155,8 @@
             <div class="nav-item active" onclick="switchTab('executor', this)">Executor</div>
             <div class="nav-item" onclick="switchTab('hub', this)">Scripts Hub</div>
             <div class="nav-item" onclick="switchTab('games', this)">Games</div>
-            <div class="nav-item">Settings</div>
         </nav>
-        <div style="font-size: 11px; color: var(--text-gray);">Build: 24.03.2026</div>
+        <div style="font-size: 11px; color: var(--text-gray);">Status: Cloud Connected</div>
     </aside>
 
     <main class="main-content">
@@ -186,7 +170,7 @@
                     <div>Engine: <span>OnyX v4</span></div>
                 </div>
                 <div class="btn-group">
-                    <button class="action-btn btn-execute" onclick="executeScript()">Execute</button>
+                    <button class="action-btn btn-execute" onclick="sendToCloud()">Execute</button>
                     <button class="action-btn" onclick="clearCode()">Clear</button>
                     <button class="action-btn">R6</button>
                     <button class="action-btn">Reset</button>
@@ -199,31 +183,20 @@
             <div class="grid-layout">
                 <div class="card">
                     <h3>Dream V2</h3>
-                    <p>Character dream effects & shaders.</p>
-                    <button class="action-btn btn-execute" style="width:100%">Execute</button>
-                </div>
-                <div class="card">
-                    <h3>Beryl Gun</h3>
-                    <p>Mobile gun script system.</p>
-                    <button class="action-btn btn-execute" style="width:100%">Execute</button>
+                    <p>Character effects system.</p>
+                    <button class="action-btn btn-execute" style="width:100%">Load Script</button>
                 </div>
             </div>
         </div>
 
         <div id="games" class="tab-content">
-            <h2 style="margin-bottom: 20px;">Connected Games</h2>
+            <h2 style="margin-bottom: 20px;">Games Manager</h2>
             <div class="grid-layout">
                 <div class="card">
                     <div class="game-icon">⚔️</div>
                     <h3>Blox Fruits</h3>
-                    <p>Status: <span style="color:#4CAF50">Online</span></p>
-                    <button class="action-btn" style="width:100%">Connect Server</button>
-                </div>
-                <div class="card">
-                    <div class="game-icon">🐶</div>
-                    <h3>Pet Simulator 99</h3>
-                    <p>Status: <span style="color:#ff4c4c">Offline</span></p>
-                    <button class="action-btn" style="width:100%" disabled>Connect Server</button>
+                    <p>Server Status: <span style="color:#4CAF50">Online</span></p>
+                    <button class="action-btn" style="width:100%">Connect</button>
                 </div>
             </div>
         </div>
@@ -233,54 +206,46 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
 <script>
     let editor;
+    // ЗАМЕНИ НА СВОЮ ССЫЛКУ С RENDER (БЕЗ "/" В КОНЦЕ)
+    const SERVER_URL = "https://твой-проект.onrender.com"; 
 
     require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
     require(['vs/editor/editor.main'], function() {
         editor = monaco.editor.create(document.getElementById('monaco-container'), {
-            value: '-- OnyX Cloud System\nprint("Connecting to Roblox...")',
+            value: '-- OnyX Cloud Executor\nprint("Hello Roblox!")',
             language: 'lua',
             theme: 'vs-dark',
             automaticLayout: true,
             cursorSmoothCaretAnimation: "on",
-            smoothScrolling: true,
             fontSize: 15,
             fontFamily: 'JetBrains Mono',
-            minimap: { enabled: false },
-            padding: { top: 20 }
+            minimap: { enabled: false }
         });
-        
-        monaco.editor.defineTheme('onyx', {
-            base: 'vs-dark',
-            inherit: true,
-            rules: [],
-            colors: { 'editor.background': '#121212' }
-        });
+        monaco.editor.defineTheme('onyx', { base: 'vs-dark', inherit: true, rules: [], colors: { 'editor.background': '#121212' } });
         monaco.editor.setTheme('onyx');
     });
 
     function switchTab(tabId, element) {
         document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
         element.classList.add('active');
-
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
-
-        if(tabId === 'executor' && editor) {
-            setTimeout(() => editor.layout(), 100);
-        }
+        if(tabId === 'executor' && editor) setTimeout(() => editor.layout(), 100);
     }
 
-    function executeScript() {
+    async function sendToCloud() {
         const code = editor.getValue();
-        // ВАЖНО: GitHub Pages не может это отправить. Нужен Backend.
-        console.log("Sending to Server: ", code);
-        alert("Script sent to Cloud Queue!");
+        try {
+            await fetch(`${SERVER_URL}/update_script`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: code
+            });
+            alert("Script sent to Cloud!");
+        } catch (e) { alert("Server error. Check Console."); }
     }
 
-    function clearCode() {
-        if(editor) editor.setValue('');
-    }
+    function clearCode() { editor.setValue(''); }
 </script>
-
 </body>
 </html>
