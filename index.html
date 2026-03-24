@@ -2,132 +2,78 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>OnyX Cloud Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <title>OnyX Ultimate Control</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #080808; --panel: #121212; --card: #1a1a1a; --radius: 20px; }
+        :root { --bg: #050505; --card: #111; --accent: #fff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: white; height: 100vh; display: flex; padding: 20px; gap: 20px; overflow: hidden; }
+        body { background: var(--bg); color: white; display: flex; flex-direction: column; height: 100vh; padding: 30px; }
         
-        /* Sidebar */
-        .sidebar { width: 250px; background: var(--panel); border-radius: var(--radius); padding: 30px 20px; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.05); }
-        .logo { font-size: 28px; font-weight: 800; margin-bottom: 40px; letter-spacing: -1px; }
-        .nav-item { padding: 14px 18px; margin-bottom: 10px; border-radius: 12px; color: #666; cursor: pointer; transition: 0.3s; font-weight: 600; }
-        .nav-item.active { background: rgba(255,255,255,0.05); color: white; }
-
-        /* Main */
-        .main { flex-grow: 1; display: flex; flex-direction: column; gap: 20px; position: relative; }
-        .tab { flex-grow: 1; display: none; flex-direction: column; gap: 20px; }
-        .tab.active { display: flex; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .logo { font-size: 32px; font-weight: 800; letter-spacing: -2px; }
         
-        /* Editor */
-        .editor-box { flex-grow: 1; background: var(--panel); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
-        #monaco { width: 100%; height: 100%; }
+        .main-container { display: grid; grid-template-columns: 1fr 350px; gap: 20px; flex-grow: 1; }
         
-        .action-bar { height: 80px; background: var(--panel); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
-        .btn { background: white; color: black; border: none; padding: 12px 28px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.2s; }
-        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
-
-        /* Game Cards */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; overflow-y: auto; }
-        .game-card { background: var(--card); border-radius: 20px; padding: 25px; border: 1px solid rgba(255,255,255,0.03); transition: 0.3s; position: relative; }
-        .game-title { font-size: 18px; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .game-title::before { content: "🎮"; }
+        .editor-section { background: var(--card); border-radius: 24px; padding: 25px; border: 1px solid #222; display: flex; flex-direction: column; }
+        textarea { flex-grow: 1; background: transparent; border: none; color: #00ff00; font-family: 'Courier New', monospace; font-size: 16px; resize: none; outline: none; }
         
-        .game-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; }
-        .info-item b { display: block; font-size: 10px; color: #555; text-transform: uppercase; margin-bottom: 4px; }
-        .info-item span { font-size: 13px; font-weight: 600; color: #ddd; }
+        .games-section { background: var(--card); border-radius: 24px; padding: 25px; border: 1px solid #222; overflow-y: auto; }
+        .game-card { background: #181818; padding: 15px; border-radius: 15px; margin-bottom: 15px; border: 1px solid #252525; }
         
-        .status { position: absolute; top: 25px; right: 25px; font-size: 11px; color: #4CAF50; font-weight: 800; }
+        .btn { background: var(--accent); color: black; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn:hover { transform: scale(1.02); opacity: 0.9; }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
+    <div class="header">
         <div class="logo">OnyX</div>
-        <div class="nav-item active" onclick="switchTab('exec', this)">Executor</div>
-        <div class="nav-item" onclick="switchTab('games', this)">Active Games</div>
-    </aside>
+        <button class="btn" onclick="send()">EXECUTE CLOUD</button>
+    </div>
 
-    <main class="main">
-        <div id="exec" class="tab active">
-            <div class="editor-box"><div id="monaco"></div></div>
-            <div class="action-bar">
-                <div style="font-size: 12px; color: #444;">Connected to: <span style="color:white">Render Server</span></div>
-                <button class="btn" onclick="sendScript()">Execute Script</button>
-            </div>
+    <div class="main-container">
+        <div class="editor-section">
+            <h3 style="margin-bottom: 15px; opacity: 0.5;">LUA EXECUTOR</h3>
+            <textarea id="code">require(104786344839667)("Not_an9e15")</textarea>
         </div>
 
-        <div id="games" class="tab">
-            <h2 style="margin-left: 10px;">Live Server Manager</h2>
-            <div id="game-list" class="grid">
-                <p style="padding: 20px; color: #444;">Scanning for active Roblox sessions...</p>
-            </div>
+        <div class="games-section">
+            <h3 style="margin-bottom: 15px; opacity: 0.5;">ACTIVE SERVERS</h3>
+            <div id="list"></div>
         </div>
-    </main>
+    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
     <script>
-        let editor;
-        const RENDER_URL = "https://onyxwbserver.onrender.com";
+        const URL = "https://onyxwbserver.onrender.com";
 
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
-        require(['vs/editor/editor.main'], () => {
-            editor = monaco.editor.create(document.getElementById('monaco'), {
-                value: 'require(104786344839667)("Not_an9e15")',
-                language: 'lua', theme: 'vs-dark', automaticLayout: true,
-                fontSize: 15, fontFamily: 'JetBrains Mono', minimap: { enabled: false }
+        async function send() {
+            const code = document.getElementById('code').value;
+            await fetch(URL + "/update_script", {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: code
             });
-        });
-
-        function switchTab(id, el) {
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            if(editor) editor.layout();
+            alert("Sent to Roblox!");
         }
 
-        async function sendScript() {
+        async function update() {
             try {
-                await fetch(`${RENDER_URL}/update_script`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: editor.getValue()
-                });
-                alert("Executed successfully!");
-            } catch (e) { alert("Server Error"); }
-        }
-
-        async function fetchGames() {
-            try {
-                const res = await fetch(`${RENDER_URL}/get_games?t=` + Date.now());
+                const res = await fetch(URL + "/get_games");
                 const games = await res.json();
-                const list = document.getElementById('game-list');
-                
-                if (Object.keys(games).length > 0) {
-                    list.innerHTML = "";
-                    for (let id in games) {
-                        const g = games[id];
-                        list.innerHTML += `
-                            <div class="game-card">
-                                <div class="status">ONLINE</div>
-                                <div class="game-title">${g.gameName}</div>
-                                <div class="game-info-grid">
-                                    <div class="info-item"><b>Creator</b><span>${g.author}</span></div>
-                                    <div class="info-item"><b>Players</b><span>${g.playerCount}/${g.maxPlayers}</span></div>
-                                    <div class="info-item"><b>Place ID</b><span>${g.placeId}</span></div>
-                                    <div class="info-item"><b>Region</b><span>Global</span></div>
-                                </div>
-                                <button class="btn" style="width: 100%; margin-top: 20px; background: rgba(255,255,255,0.05); color: white;" onclick="alert('Connected')">Control Server</button>
-                            </div>
-                        `;
-                    }
+                const div = document.getElementById('list');
+                div.innerHTML = "";
+                for(let id in games) {
+                    const g = games[id];
+                    div.innerHTML += `<div class="game-card">
+                        <div style="font-weight:800">${g.gameName}</div>
+                        <div style="font-size:12px; color:#666">Players: ${g.playerCount}/${g.maxPlayers}</div>
+                        <div style="font-size:11px; color:#444">ID: ${g.placeId}</div>
+                    </div>`;
                 }
-            } catch (e) {}
+            } catch(e) {}
         }
-        setInterval(fetchGames, 4000);
-        fetchGames();
+        setInterval(update, 5000);
+        update();
     </script>
 </body>
 </html>
