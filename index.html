@@ -7,39 +7,44 @@
     <style>
         :root {
             --bg: #080808; --panel: #121212; --card: #1a1a1a;
-            --text-gray: #777; --radius: 24px; --ts: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            --radius: 24px; --ts: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: var(--bg); color: white; height: 100vh; display: flex; padding: 20px; gap: 20px; overflow: hidden; }
-        body::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 40px 40px; z-index: -1;
-        }
-        .sidebar { width: 240px; background: var(--panel); border-radius: var(--radius); padding: 30px 20px; display: flex; flex-direction: column; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .nav-item { padding: 12px 15px; margin-bottom: 8px; border-radius: 14px; color: var(--text-gray); cursor: pointer; transition: 0.3s; }
-        .nav-item.active, .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        
+        /* Sidebar */
+        .sidebar { width: 240px; background: var(--panel); border-radius: var(--radius); padding: 30px 20px; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.05); }
+        .logo { font-size: 26px; font-weight: 800; margin-bottom: 40px; }
+        .nav-item { padding: 12px 15px; margin-bottom: 8px; border-radius: 14px; color: #777; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { background: rgba(255,255,255,0.05); color: white; }
+
+        /* Main Content */
         .main { flex-grow: 1; display: flex; flex-direction: column; gap: 20px; }
         .tab { flex-grow: 1; display: none; animation: tabReveal var(--ts); }
         .tab.active { display: flex; flex-direction: column; gap: 20px; }
         @keyframes tabReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .editor-window { flex-grow: 1; background: var(--panel); border-radius: var(--radius); border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden; }
+
+        .editor-window { flex-grow: 1; background: var(--panel); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
         #monaco { width: 100%; height: 100%; }
-        .bottom-bar { height: 85px; background: var(--panel); border-radius: var(--radius); border: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
-        .btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: white; padding: 12px 20px; border-radius: 14px; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .btn:hover { background: rgba(255,255,255,0.1); }
+
+        .bottom-bar { height: 85px; background: var(--panel); border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+        
+        .btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: white; padding: 12px 20px; border-radius: 14px; font-weight: 600; cursor: pointer; }
         .btn-exec { background: white; color: black; border: none; }
+        
+        /* Game Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .game-card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.03); display: flex; flex-direction: column; gap: 15px; }
-        .game-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; font-size: 11px; }
-        .detail-item b { color: var(--text-gray); display: block; font-size: 9px; }
+        .game-card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.03); transition: 0.3s; }
+        .game-card:hover { transform: translateY(-5px); }
+        .game-details { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: rgba(0,0,0,0.25); padding: 12px; border-radius: 12px; font-size: 11px; margin-top: 10px; }
+        .detail-item b { color: #777; display: block; font-size: 9px; text-transform: uppercase; }
     </style>
 </head>
 <body>
+
     <aside class="sidebar">
-        <div class="logo" style="font-size: 26px; font-weight: 800; margin-bottom: 40px;">OnyX</div>
+        <div class="logo">OnyX</div>
         <div class="nav-item active" onclick="switchTab('executor', this)">Executor</div>
-        <div class="nav-item" onclick="switchTab('hub', this)">Scripts Hub</div>
         <div class="nav-item" onclick="switchTab('games', this)">Games Manager</div>
     </aside>
 
@@ -47,24 +52,19 @@
         <div id="executor" class="tab active">
             <div class="editor-window"><div id="monaco"></div></div>
             <footer class="bottom-bar">
-                <div style="font-size: 12px; color: var(--text-gray);">Status: <span id="status" style="color: #4CAF50;">CONNECTED</span></div>
+                <div style="font-size: 12px; color: #777;">System: <span style="color: #4CAF50;">ONLINE</span></div>
                 <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-exec" onclick="sendScript()">Execute</button>
+                    <button class="btn btn-exec" onclick="sendScript()">Execute to SSS</button>
                     <button class="btn" onclick="editor.setValue('')">Clear</button>
                 </div>
             </footer>
         </div>
 
-        <div id="hub" class="tab">
-            <h2 style="margin-bottom: 10px;">Scripts Hub</h2>
-            <div class="grid">
-                <div class="game-card"><h3>Universal Admin</h3><button class="btn btn-exec">Load</button></div>
-            </div>
-        </div>
-
         <div id="games" class="tab">
             <h2 style="margin-bottom: 10px;">Active Servers</h2>
-            <div id="game-list" class="grid"><p style="color: #444;">Searching for servers...</p></div>
+            <div id="game-list" class="grid">
+                <p style="color: #444;">Ожидание серверов...</p>
+            </div>
         </div>
     </main>
 
@@ -76,7 +76,7 @@
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
         require(['vs/editor/editor.main'], () => {
             editor = monaco.editor.create(document.getElementById('monaco'), {
-                value: '-- OnyX Cloud System\nprint("Waiting...")',
+                value: '-- OnyX Cloud\nprint("Script moved to ServerScriptService!")',
                 language: 'lua', theme: 'vs-dark', automaticLayout: true, fontSize: 15, minimap: { enabled: false }
             });
             monaco.editor.defineTheme('onyx', { base: 'vs-dark', inherit: true, rules: [], colors: { 'editor.background': '#121212' } });
@@ -88,46 +88,47 @@
             el.classList.add('active');
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            if(id === 'executor' && editor) setTimeout(() => editor.layout(), 100);
+            if(editor) setTimeout(() => editor.layout(), 100);
         }
 
         async function sendScript() {
+            const code = editor.getValue();
             try {
                 await fetch(`${RENDER_URL}/update_script`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
-                    body: editor.getValue()
+                    body: code
                 });
-                alert("Executed!");
-            } catch (e) { alert("Render Error"); }
+                alert("Код отправлен в ServerScriptService!");
+            } catch (e) { alert("Ошибка связи с Render"); }
         }
 
-        async function fetchGames() {
+        async function updateGames() {
             try {
-                const res = await fetch(`${RENDER_URL}/get_games`);
+                const res = await fetch(`${RENDER_URL}/get_games?t=${Date.now()}`);
                 const games = await res.json();
-                const list = document.getElementById('game-list');
+                const container = document.getElementById('game-list');
                 if (Object.keys(games).length > 0) {
-                    list.innerHTML = "";
+                    container.innerHTML = "";
                     for (let id in games) {
                         const g = games[id];
-                        list.innerHTML += `
+                        container.innerHTML += `
                             <div class="game-card">
-                                <div style="font-weight: 800;">${g.gameName}</div>
+                                <div style="font-weight: 800; font-size: 16px;">${g.gameName}</div>
                                 <div class="game-details">
                                     <div class="detail-item"><b>Author</b><span>${g.author}</span></div>
                                     <div class="detail-item"><b>Players</b><span>${g.playerCount}/${g.maxPlayers}</span></div>
-                                    <div class="detail-item"><b>ID</b><span>${g.placeId}</span></div>
+                                    <div class="detail-item"><b>Place ID</b><span>${g.placeId}</span></div>
                                     <div class="detail-item"><b>Status</b><span style="color:#4CAF50">● Online</span></div>
                                 </div>
-                                <button class="btn btn-exec" onclick="alert('Connected')">Connect</button>
-                            </div>`;
+                                <button class="btn btn-exec" style="width:100%; margin-top:10px;" onclick="alert('Подключено')">Connect</button>
+                            </div>
+                        `;
                     }
                 }
-            } catch (e) { console.error("Fetch Error:", e); }
+            } catch (e) {}
         }
-        setInterval(fetchGames, 5000);
-        fetchGames();
+        setInterval(updateGames, 5000);
     </script>
 </body>
 </html>
